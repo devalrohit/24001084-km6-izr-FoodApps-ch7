@@ -1,0 +1,57 @@
+<resources>
+
+    <string name="text_banner">Toko Komputer Serba ada</string>
+    <string name="add_to_cart">Add to Cart</string>
+    <string name="delivered_to">Delivered to</string>
+    <string name="jalan_depok_timur">Jalan Depok Timur</string>
+    <string name="you_might_looking_for">You might looking for</string>
+    <string name="text_btn_add_to_cart">Add to cart</string>
+
+    <string name="text_edit">Edit</string>
+    <string name="text_save">Save</string>
+    <string name="text_hint_notes">Notes</string>
+    <string name="text_checkout">Checkout</string>
+
+    <string name="text_add_to_cart_success">Add to cart Success</string>
+    <string name="add_to_cart_failed">Add to cart failed</string>
+    <string name="loading">Loading</string>
+    <string name="text_title_order_confirmation">Order Confirmation</string>
+    <string name="text_delivery_method">Delivery Method</string>
+    <string name="text_pick_up">Pick Up</string>
+    <string name="text_delivery">Delivery</string>
+    <string name="text_payment_method">Payment Method</string>
+    <string name="text_cash">Cash</string>
+    <string name="text_e_wallet">E-Wallet</string>
+    <string name="text_cart_is_empty">Cart is Empty</string>
+    <string name="shopping_summary">Shopping summary</string>
+    <string name="total_quantity">x%s</string>
+    <string name="kembali_ke_home">Kembali Ke Home</string>
+    <string name="app_name">AppFoodch4</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_tab_home">Home</string>
+    <string name="title_tab_cart">Your Cart</string>
+    <string name="title_tab_profile">Profile</string>
+    <string name="mau_makan_apa_hari_ini">Mau makan apa hari ini?</string>
+    <string name="rohit">ROHIT</string>
+    <string name="promotions">Promotions\n</string>
+    <string name="catalog">Catalog\n</string>
+    <string name="name">Rohit\n</string>
+    <string name="penawaran_hari_ini">Penawaran Hari Ini</string>
+    <string name="spesial_discount_belanja_30">Spesial discount belanja 30%</string>
+    <string name="untuk_semua_pesanan_di_atas_rp_100_000">Untuk Semua Pesanan di atas Rp.100.000</string>
+    <string name="rp_18_000">Rp.18.000</string>
+    <string name="_1">1</string>
+    <string name="name_profile">Name</string>
+    <string name="muhammad_izroil_profile">Muhammad Izroil</string>
+    <string name="number_hp_profile">Number Hp</string>
+    <string name="_085159940924_profile">085159940924</string>
+    <string name="email_profile">Email</string>
+    <string name="muhammadizroil22_gmail_com_profile">muhammadizroil22@gmail.com</string>
+    <string name="add_to_cart_detail_content">Add to cart</string>
+    <string name="text_title_your_cart">Yout Card</string>
+    <string name="text_total_price">Total Price</string>
+    <string name="check_out">Check Out</string>
+    <string name="text_note">text noteeeee</string>
+    <string name="idr">IDR.</string>
+
+</resources>
