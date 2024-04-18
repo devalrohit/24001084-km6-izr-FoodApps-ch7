@@ -17,5 +17,4 @@ data class Product(
     var desc: String,
     val locationPictUrl: String,
     val location: String,
-    val detailLocation: String
 ) : Parcelable

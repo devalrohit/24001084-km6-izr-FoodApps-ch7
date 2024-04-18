@@ -6,10 +6,6 @@ import com.catnip.appfood_rohit.data.source.local.database.entity.CartEntity
 
 import kotlinx.coroutines.flow.Flow
 
-/**
-Written with love by Muhammad Hermas Yuda Pamungkas
-Github : https://github.com/hermasyp
- **/
 interface CartDataSource {
     fun getAllCarts(): Flow<List<CartEntity>>
     suspend fun insertCart(cart: CartEntity): Long

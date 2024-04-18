@@ -5,20 +5,21 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.catnip.egroceries.core.ViewHolderBinder
 import com.catnip.appfood_rohit.data.model.Product
 import com.catnip.appfood_rohit.databinding.ItemMenuGridBinding
 import com.catnip.appfood_rohit.databinding.ItemMenuListBinding
-import com.example.appfood_rohit.presentation.home.adapter.FoodGridItemViewHolder
-import com.example.appfood_rohit.presentation.home.adapter.FoodListItemViewHolder
+import com.catnip.appfoos_rohit.presentation.home.adapter.viewholder.FoodGridItemViewHolder
+import com.catnip.appfoos_rohit.presentation.home.adapter.viewholder.FoodListItemViewHolder
 
+
+interface OnItemClickedListener<T> {
+    fun onItemClicked(item: T)
+}
 
 class ProductListAdapter(
-    private val listener: OnItemClickedListener<Product>,
-    private val listMode: Int = MODE_GRID
-) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
+    private var listMode: Int,
+    private val itemClick: (Product) -> Unit
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         const val MODE_LIST = 0
         const val MODE_GRID = 1
@@ -39,6 +40,7 @@ class ProductListAdapter(
         }
     )
 
+
     fun submitData(data: List<Product>) {
         asyncDataDiffer.submitList(data)
     }
@@ -50,14 +52,14 @@ class ProductListAdapter(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            ), listener
+            ), itemClick
         ) else {
             FoodListItemViewHolder(
                 ItemMenuListBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
-                ), listener
+                ), itemClick
             )
         }
     }
@@ -65,11 +67,13 @@ class ProductListAdapter(
     override fun getItemCount(): Int = asyncDataDiffer.currentList.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder !is ViewHolderBinder<*>) return
-        (holder as ViewHolderBinder<Product>).bind(asyncDataDiffer.currentList[position])
+        when (holder) {
+            is FoodGridItemViewHolder -> holder.bind(asyncDataDiffer.currentList[position])
+            is FoodListItemViewHolder -> holder.bind(asyncDataDiffer.currentList[position])
+        }
     }
-}
 
-interface OnItemClickedListener<T> {
-    fun onItemClicked(item: T)
+    fun updateListMode(newListMode: Int) {
+        listMode = newListMode
+    }
 }

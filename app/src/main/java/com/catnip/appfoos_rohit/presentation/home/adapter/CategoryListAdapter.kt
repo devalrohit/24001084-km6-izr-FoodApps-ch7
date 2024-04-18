@@ -9,10 +9,6 @@ import coil.load
 import com.catnip.appfood_rohit.data.model.Category
 import com.catnip.appfood_rohit.databinding.ItemCategoryProductBinding
 
-/**
-Written with love by Muhammad Hermas Yuda Pamungkas
-Github : https://github.com/hermasyp
- **/
 class CategoryListAdapter(private val itemClick: (Category) -> Unit) :
     RecyclerView.Adapter<CategoryListAdapter.ItemCategoryViewHolder>() {
 
