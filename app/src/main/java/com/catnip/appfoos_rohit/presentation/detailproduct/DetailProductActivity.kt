@@ -16,13 +16,11 @@ import com.catnip.appfood_rohit.data.repository.CartRepository
 import com.catnip.appfood_rohit.data.repository.CartRepositoryImpl
 import com.catnip.appfood_rohit.data.source.local.database.AppDatabase
 import com.catnip.appfood_rohit.databinding.ActivityDetailProductBinding
-import com.catnip.appfood_rohit.databinding.LayoutDetailLocationBinding
 import com.catnip.appfood_rohit.utils.GenericViewModelFactory
 import com.catnip.appfood_rohit.utils.proceedWhen
 import com.catnip.appfood_rohit.utils.toRupiahFormat
 
 class DetailProductActivity : AppCompatActivity() {
-    private lateinit var locationBinding: LayoutDetailLocationBinding
     private val binding: ActivityDetailProductBinding by lazy {
         ActivityDetailProductBinding.inflate(layoutInflater)
     }
@@ -41,9 +39,8 @@ class DetailProductActivity : AppCompatActivity() {
         bindProduct(viewModel.product)
         setClickListener()
         observeData()
-        locationBinding = binding.layoutDetailLocation
-        val food = intent.getParcelableExtra<Product>(EXTRA_PRODUCT)
-        food?.let { displayProductDetails(it) }
+        val product = intent.getParcelableExtra<Product>(EXTRA_PRODUCT)
+        product?.let { displayProductDetails(it) }
     }
 
     private fun setClickListener() {
@@ -59,37 +56,16 @@ class DetailProductActivity : AppCompatActivity() {
         binding.btnAddToCart.setOnClickListener {
             addProductToCart()
         }
-    }
-
-    private fun displayProductDetails(product: Product){
-        locationBinding.apply {
-            tvLocation.text = product.location
-            tvDetailLocation.text = product.detailLocation
-            tvDetailLocation.setOnClickListener {
-                openLocationUrl(product.locationPictUrl)
+        binding.layoutDetailLocation.tvDetailLocation.setOnClickListener {
+            viewModel.product?.let { product ->
+                openLocationOnMap(product.locationPictUrl)
             }
         }
     }
 
-
-    private fun addProductToCart() {
-        viewModel.addToCart().observe(this) {
-            it.proceedWhen(
-                doOnSuccess = {
-                    Toast.makeText(
-                        this,
-                        getString(R.string.text_add_to_cart_success), Toast.LENGTH_SHORT
-                    ).show()
-                    finish()
-                },
-                doOnError = {
-                    Toast.makeText(this, getString(R.string.add_to_cart_failed), Toast.LENGTH_SHORT)
-                        .show()
-                },
-                doOnLoading = {
-                    Toast.makeText(this, getString(R.string.loading), Toast.LENGTH_SHORT).show()
-                }
-            )
+    private fun displayProductDetails(product: Product) {
+        binding.layoutDetailLocation.apply {
+            tvDetailLocation.text = product.location
         }
     }
 
@@ -104,6 +80,28 @@ class DetailProductActivity : AppCompatActivity() {
         }
     }
 
+    private fun addProductToCart() {
+        viewModel.addToCart().observe(this) {
+            it.proceedWhen(
+                doOnSuccess = {
+                    Toast.makeText(
+                        this,
+                        getString(R.string.text_add_to_cart_success), Toast.LENGTH_SHORT
+                    ).show()
+                    finish()
+                },
+                doOnError = {
+                    Toast.makeText(
+                        this, getString(R.string.add_to_cart_failed), Toast.LENGTH_SHORT
+                    ).show()
+                },
+                doOnLoading = {
+                    Toast.makeText(this, getString(R.string.loading), Toast.LENGTH_SHORT).show()
+                }
+            )
+        }
+    }
+
     private fun observeData() {
         viewModel.priceLiveData.observe(this) {
             binding.btnAddToCart.isEnabled = it != 0.0
@@ -114,9 +112,17 @@ class DetailProductActivity : AppCompatActivity() {
         }
     }
 
-    private fun openLocationUrl(url: String) {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-        startActivity(intent)
+    private fun openLocationOnMap(locationUrl: String) {
+        if (locationUrl.isNotBlank()) {
+            val mapIntent = Intent(Intent.ACTION_VIEW, Uri.parse(locationUrl))
+            if (mapIntent.resolveActivity(packageManager) != null) {
+                startActivity(mapIntent)
+            } else {
+                Toast.makeText(this, "No application can handle this action", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Toast.makeText(this, "Location URL is empty", Toast.LENGTH_SHORT).show()
+        }
     }
 
     companion object {
