@@ -1,14 +1,16 @@
-package com.catnip.egroceries.data.network.api.model.order
+package com.catnip.kokomputer.data.source.network.model.checkout
 
-import androidx.annotation.Keep
+
 import com.google.gson.annotations.SerializedName
+import androidx.annotation.Keep
 
 @Keep
-data class OrderResponse(
+data class CheckoutResponse(
     @SerializedName("code")
     val code: Int?,
     @SerializedName("message")
     val message: String?,
     @SerializedName("status")
     val status: Boolean?
+
 )

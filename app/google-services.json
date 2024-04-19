@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "946246212028",
+    "project_id": "appfoodrohit-ch5",
+    "storage_bucket": "appfoodrohit-ch5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:946246212028:android:a2ce1cd8f5ddaf3d4f73b9",
+        "android_client_info": {
+          "package_name": "com.catnip.appfood_rohit"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAK2iss06j8Dg7swThtXlAfeC88TiGDy74"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

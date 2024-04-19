@@ -1,5 +1,6 @@
 package com.catnip.appfood_rohit.presentation.checkout
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -11,22 +12,32 @@ import com.catnip.appfood_rohit.data.datasource.cart.CartDataSource
 import com.catnip.appfood_rohit.data.datasource.cart.CartDatabaseDataSource
 import com.catnip.appfood_rohit.data.repository.CartRepository
 import com.catnip.appfood_rohit.data.repository.CartRepositoryImpl
+import com.catnip.appfood_rohit.data.repository.UserRepository
+import com.catnip.appfood_rohit.data.repository.UserRepositoryImpl
 import com.catnip.appfood_rohit.data.source.local.database.AppDatabase
 import com.catnip.appfood_rohit.databinding.ActivityCheckoutBinding
 import com.catnip.appfood_rohit.presentation.checkout.adapter.PriceListAdapter
 import com.catnip.appfood_rohit.presentation.common.adapter.CartListAdapter
+import com.catnip.appfood_rohit.presentation.login.LoginActivity
 import com.catnip.appfood_rohit.utils.GenericViewModelFactory
 import com.catnip.appfood_rohit.utils.proceedWhen
 import com.catnip.appfood_rohit.utils.toRupiahFormat
+import com.catnip.appfoos_rohit.data.datasource.user.AuthDataSource
+import com.catnip.appfoos_rohit.data.datasource.user.FirebaseAuthDataSource
+import com.catnip.appfoos_rohit.data.source.network.firebase.FirebaseService
+import com.catnip.appfoos_rohit.data.source.network.firebase.FirebaseServiceImpl
 
 class CheckoutActivity : AppCompatActivity() {
 
 
     private val viewModel: CheckoutViewModel by viewModels {
-        val db = AppDatabase.getInstance(this)
-        val ds: CartDataSource = CartDatabaseDataSource(db.cartDao())
-        val rp: CartRepository = CartRepositoryImpl(ds)
-        GenericViewModelFactory.create(CheckoutViewModel(rp))
+        val service: FirebaseService = FirebaseServiceImpl()
+        val firebaseDataSource: AuthDataSource = FirebaseAuthDataSource(service)
+        val firebaseRepository: UserRepository = UserRepositoryImpl(firebaseDataSource)
+        val database = AppDatabase.getInstance(this)
+        val dataSource: CartDataSource = CartDatabaseDataSource(database.cartDao())
+        val cartRepository: CartRepository = CartRepositoryImpl(dataSource)
+        GenericViewModelFactory.create(CheckoutViewModel(cartRepository, firebaseRepository))
     }
     private val binding: ActivityCheckoutBinding by lazy {
         ActivityCheckoutBinding.inflate(layoutInflater)
@@ -77,8 +88,16 @@ class CheckoutActivity : AppCompatActivity() {
     }
     private fun setClickListeners() {
         binding.btnCheckoutFinal.setOnClickListener {
-            viewModel.order()
+            if (viewModel.isLoggedIn()) {
+                viewModel.clearCart()
+                showDialogCheckoutSuccess()
+            } else {
+                navigateToLogin()
+            }
         }
+    }
+    private fun navigateToLogin() {
+        startActivity(Intent(this, LoginActivity::class.java))
     }
     private fun showDialogCheckoutSuccess() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_checkout_success, null)
