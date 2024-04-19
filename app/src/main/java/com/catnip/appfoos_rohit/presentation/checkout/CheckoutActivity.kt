@@ -10,11 +10,15 @@ import androidx.core.view.isVisible
 import com.catnip.appfood_rohit.R
 import com.catnip.appfood_rohit.data.datasource.cart.CartDataSource
 import com.catnip.appfood_rohit.data.datasource.cart.CartDatabaseDataSource
+import com.catnip.appfood_rohit.data.datasource.product.ProductApiDataSource
+import com.catnip.appfood_rohit.data.datasource.product.ProductDataSource
 import com.catnip.appfood_rohit.data.repository.CartRepository
 import com.catnip.appfood_rohit.data.repository.CartRepositoryImpl
+import com.catnip.appfood_rohit.data.repository.ProductRepositoryImpl
 import com.catnip.appfood_rohit.data.repository.UserRepository
 import com.catnip.appfood_rohit.data.repository.UserRepositoryImpl
 import com.catnip.appfood_rohit.data.source.local.database.AppDatabase
+import com.catnip.appfood_rohit.data.source.network.services.AppFoodRohitApiService
 import com.catnip.appfood_rohit.databinding.ActivityCheckoutBinding
 import com.catnip.appfood_rohit.presentation.checkout.adapter.PriceListAdapter
 import com.catnip.appfood_rohit.presentation.common.adapter.CartListAdapter
@@ -29,18 +33,20 @@ import com.catnip.appfoos_rohit.data.source.network.firebase.FirebaseServiceImpl
 
 class CheckoutActivity : AppCompatActivity() {
 
-
-    private val viewModel: CheckoutViewModel by viewModels {
-        val service: FirebaseService = FirebaseServiceImpl()
-        val firebaseDataSource: AuthDataSource = FirebaseAuthDataSource(service)
-        val firebaseRepository: UserRepository = UserRepositoryImpl(firebaseDataSource)
-        val database = AppDatabase.getInstance(this)
-        val dataSource: CartDataSource = CartDatabaseDataSource(database.cartDao())
-        val cartRepository: CartRepository = CartRepositoryImpl(dataSource)
-        GenericViewModelFactory.create(CheckoutViewModel(cartRepository, firebaseRepository))
-    }
     private val binding: ActivityCheckoutBinding by lazy {
         ActivityCheckoutBinding.inflate(layoutInflater)
+    }
+    private val viewModel: CheckoutViewModel by viewModels {
+        val foodiesApiService = AppFoodRohitApiService.invoke()
+        val productDataSource : ProductDataSource = ProductApiDataSource(foodiesApiService)
+        val productRepository = ProductRepositoryImpl(productDataSource)
+        val firebaseService: FirebaseService = FirebaseServiceImpl()
+        val firebaseDataSource: AuthDataSource = FirebaseAuthDataSource(firebaseService)
+        val firebaseRepository: UserRepository = UserRepositoryImpl(firebaseDataSource)
+        val database = AppDatabase.getInstance(this)
+        val cartDataSource: CartDataSource = CartDatabaseDataSource(database.cartDao())
+        val cartRepository: CartRepository = CartRepositoryImpl(cartDataSource)
+        GenericViewModelFactory.create(CheckoutViewModel(cartRepository, firebaseRepository, productRepository ))
     }
 
     private val adapter: CartListAdapter by lazy {
@@ -58,14 +64,13 @@ class CheckoutActivity : AppCompatActivity() {
         setupList()
         observeData()
         setClickListeners()
-
     }
 
     private fun observeData() {
         observeCartData()
-        observeCheckoutResult()
+        //observeCheckoutResult()
     }
-    private fun observeCheckoutResult() {
+/*    private fun observeCheckoutResult() {
         viewModel.checkoutResult.observe(this) {
             it.proceedWhen(
                 doOnSuccess = {
@@ -85,20 +90,38 @@ class CheckoutActivity : AppCompatActivity() {
                 }
             )
         }
-    }
+    }*/
     private fun setClickListeners() {
         binding.btnCheckoutFinal.setOnClickListener {
             if (viewModel.isLoggedIn()) {
-                viewModel.clearCart()
-                showDialogCheckoutSuccess()
+                viewModel.checkoutCart().observe(this) {
+                    it.proceedWhen(
+                        doOnSuccess = {
+                            showDialogCheckoutSuccess()
+                        },
+                        doOnLoading = {
+                            binding.layoutState.root.isVisible = true
+                            binding.layoutState.pbLoading.isVisible = true
+                            binding.layoutState.tvError.isVisible = false
+                            binding.layoutContent.root.isVisible = false
+                            binding.layoutContent.rvCart.isVisible = false
+
+                        },
+                        doOnError = {
+                            Toast.makeText(
+                                this,
+                                getString(R.string.pemesanan_gagal),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    )
+                }
             } else {
                 navigateToLogin()
             }
         }
     }
-    private fun navigateToLogin() {
-        startActivity(Intent(this, LoginActivity::class.java))
-    }
+
     private fun showDialogCheckoutSuccess() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_checkout_success, null)
 
@@ -111,7 +134,9 @@ class CheckoutActivity : AppCompatActivity() {
             .create()
             .show()
     }
-
+    private fun navigateToLogin() {
+        startActivity(Intent(this, LoginActivity::class.java))
+    }
 
     private fun setupList() {
         binding.layoutContent.rvCart.adapter = adapter

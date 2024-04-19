@@ -1,12 +1,18 @@
-package com.catnip.kokomputer.data.source.network.model.checkout
+package com.example.foodiesapp.data.source.network.model.checkout
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
-/**
-Written with love by Muhammad Hermas Yuda Pamungkas
-Github : https://github.com/hermasyp
- **/
+@Keep
 data class CheckoutRequestPayload(
+
+    @SerializedName("total")
+    val total: Int? = null,
+
+    @SerializedName("username")
+    val username: String? = null,
+
     @SerializedName("orders")
-    val orders : List<CheckoutItemPayload>
+    val orders: List<CheckoutItemPayload>
 )
+
