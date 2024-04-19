@@ -3,8 +3,8 @@ package com.catnip.appfood_rohit.data.source.network.services
 import com.catnip.appfood_rohit.BuildConfig
 import com.catnip.appfoos_rohit.data.source.network.model.category.CategoriesResponse
 import com.catnip.appfoos_rohit.data.source.network.model.products.ProductResponse
-import com.catnip.kokomputer.data.source.network.model.checkout.CheckoutRequestPayload
-import com.catnip.kokomputer.data.source.network.model.checkout.CheckoutResponse
+import com.example.foodiesapp.data.source.network.model.checkout.CheckoutRequestPayload
+import com.example.foodiesapp.data.source.network.model.checkout.CheckoutResponse
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -21,7 +21,7 @@ interface AppFoodRohitApiService {
     suspend fun getProduct(@Query("c") category : String? = null) : ProductResponse
 
     @POST("order")
-    suspend fun createOrder(@Body payload: CheckoutRequestPayload): CheckoutResponse
+    suspend fun createOrder(@Body payload : CheckoutRequestPayload): CheckoutResponse
 
     companion object {
         @JvmStatic

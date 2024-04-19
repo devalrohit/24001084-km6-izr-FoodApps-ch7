@@ -81,4 +81,6 @@
     <string name="text_login_failed">Email atau Password Salah !!\nSilahkan Coba Lagi !!</string>
     <string name="text_login_success">Anda Berhasil Login</string>
     <string name="btn_logout">btn_logout</string>
+    <string name="logout">Logout</string>
+    <string name="pemesanan_gagal">pemesanan gagal</string>
 </resources>

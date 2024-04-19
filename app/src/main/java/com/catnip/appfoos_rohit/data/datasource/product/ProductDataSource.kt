@@ -1,8 +1,8 @@
 package com.catnip.appfood_rohit.data.datasource.product
 
 import com.catnip.appfoos_rohit.data.source.network.model.products.ProductResponse
-import com.catnip.kokomputer.data.source.network.model.checkout.CheckoutRequestPayload
-import com.catnip.kokomputer.data.source.network.model.checkout.CheckoutResponse
+import com.example.foodiesapp.data.source.network.model.checkout.CheckoutRequestPayload
+import com.example.foodiesapp.data.source.network.model.checkout.CheckoutResponse
 
 /**
 Written with love by Muhammad Hermas Yuda Pamungkas
