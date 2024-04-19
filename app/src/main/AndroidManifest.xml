@@ -8,14 +8,20 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/img_logo_app"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/img_logo_app"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         android:name=".App"
         tools:targetApi="31">
+        <activity
+            android:name=".presentation.register.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.login.LoginActivity"
+            android:exported="false" />
         <activity
             android:name=".presentation.detailproduct.DetailProductActivity"
             android:exported="false" />
@@ -24,6 +30,9 @@
             android:exported="false" />
         <activity
             android:name=".presentation.main.MainActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".presentation.splashscreen.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

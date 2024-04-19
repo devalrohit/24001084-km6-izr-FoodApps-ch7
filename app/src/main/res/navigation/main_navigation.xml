@@ -28,4 +28,19 @@
         android:id="@+id/detailProductActivity"
         android:name="com.catnip.appfood_rohit.presentation.detailproduct.DetailProductActivity"
         android:label="DetailProductActivity" />
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.catnip.appfood_rohit.presentation.login.LoginActivity"
+        android:label="activity_login"
+        tools:layout="@layout/activity_login" />
+    <activity
+        android:id="@+id/splashActivity"
+        android:name="com.catnip.appfood_rohit.presentation.splashscreen.SplashActivity"
+        android:label="activity_splash"
+        tools:layout="@layout/activity_splash" />
+    <activity
+        android:id="@+id/registerActivity"
+        android:name="com.catnip.appfood_rohit.presentation.register.RegisterActivity"
+        android:label="activity_register"
+        tools:layout="@layout/activity_register" />
 </navigation>

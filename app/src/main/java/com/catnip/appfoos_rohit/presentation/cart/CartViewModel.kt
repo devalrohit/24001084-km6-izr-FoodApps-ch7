@@ -10,10 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-/**
-Written with love by Muhammad Hermas Yuda Pamungkas
-Github : https://github.com/hermasyp
- **/
+
 class CartViewModel(private val cartRepository: CartRepository) : ViewModel() {
     fun getAllCarts() = cartRepository.getUserCartData().asLiveData(Dispatchers.IO)
     fun decreaseCart(item: Cart) {

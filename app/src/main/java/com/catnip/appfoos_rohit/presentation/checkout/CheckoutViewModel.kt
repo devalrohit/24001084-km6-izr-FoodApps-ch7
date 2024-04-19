@@ -6,11 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.catnip.appfood_rohit.data.repository.CartRepository
+import com.catnip.appfood_rohit.data.repository.UserRepository
 import com.catnip.appfood_rohit.utils.ResultWrapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CheckoutViewModel(private val cartRepository: CartRepository) : ViewModel() {
+class CheckoutViewModel(private val cartRepository: CartRepository,
+                        private val userRepository: UserRepository
+) : ViewModel() {
 
     val cartList = cartRepository.getCheckoutData().asLiveData(Dispatchers.IO)
 
@@ -31,5 +34,8 @@ class CheckoutViewModel(private val cartRepository: CartRepository) : ViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             cartRepository.deleteAll()
         }
+    }
+    fun isLoggedIn(): Boolean {
+        return userRepository.isLoggedIn()
     }
 }

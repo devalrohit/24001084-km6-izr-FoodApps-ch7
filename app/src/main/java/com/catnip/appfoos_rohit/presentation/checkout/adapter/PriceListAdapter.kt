@@ -9,10 +9,7 @@ import com.catnip.appfood_rohit.data.model.PriceItem
 import com.catnip.appfood_rohit.databinding.ItemPriceBinding
 import com.catnip.appfood_rohit.utils.toRupiahFormat
 
-/**
-Written with love by Muhammad Hermas Yuda Pamungkas
-Github : https://github.com/hermasyp
- **/
+
 class PriceListAdapter(private val itemClick: (PriceItem) -> Unit) :
     RecyclerView.Adapter<PriceListAdapter.PriceItemViewHolder>() {
 

@@ -83,7 +83,6 @@ class CartFragment : Fragment() {
             context?.startActivity(Intent(requireContext(), CheckoutActivity::class.java))
         }
     }
-
     private fun observeData() {
         viewModel.getAllCarts().observe(viewLifecycleOwner) { result ->
             result.proceedWhen(
@@ -92,6 +91,7 @@ class CartFragment : Fragment() {
                     binding.layoutState.pbLoading.isVisible = true
                     binding.layoutState.tvError.isVisible = false
                     binding.rvCart.isVisible = false
+                    binding.btnCheckout.isEnabled = false
                 },
                 doOnSuccess = {
                     binding.layoutState.root.isVisible = false
@@ -99,9 +99,9 @@ class CartFragment : Fragment() {
                     binding.layoutState.tvError.isVisible = false
                     binding.rvCart.isVisible = true
                     result.payload?.let { (carts, totalPrice) ->
-                        //set list cart data
                         adapter.submitData(carts)
                         binding.tvTotalPrice.text = totalPrice.toRupiahFormat()
+                        binding.btnCheckout.isEnabled = true
                     }
                 },
                 doOnError = {
@@ -110,6 +110,7 @@ class CartFragment : Fragment() {
                     binding.layoutState.tvError.isVisible = true
                     binding.layoutState.tvError.text = result.exception?.message.orEmpty()
                     binding.rvCart.isVisible = false
+                    binding.btnCheckout.isEnabled = false
                 },
                 doOnEmpty = {
                     binding.layoutState.root.isVisible = true
@@ -117,9 +118,10 @@ class CartFragment : Fragment() {
                     binding.layoutState.tvError.isVisible = true
                     binding.layoutState.tvError.text = getString(R.string.text_cart_is_empty)
                     binding.rvCart.isVisible = false
-                    result.payload?.let { (_, totalPrice) ->
+                    result.payload?.let { (carts, totalPrice) ->
                         binding.tvTotalPrice.text = totalPrice.toRupiahFormat()
                     }
+                    binding.btnCheckout.isEnabled = false
                 }
             )
         }
