@@ -45,21 +45,6 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Username Input -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/username_input_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/username_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:hint="@string/number_hp_profile"
-            android:text="@string/_085159940924_profile" />
-
-    </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Email Input -->
     <com.google.android.material.textfield.TextInputLayout
