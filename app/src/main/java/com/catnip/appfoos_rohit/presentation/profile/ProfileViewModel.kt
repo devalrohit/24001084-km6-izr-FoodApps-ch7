@@ -16,7 +16,7 @@ class ProfileViewModel(private val repository: UserRepository) : ViewModel() {
             name = "Muhammad Izroil",
             nomor = "085159940924",
             email = "muhammadizroil22@gmail.com",
-            profileImg = "https://github.com/devalrohit/AppFoodch4_assets/blob/main/profile/rohit.jpg?raw=true"
+            profileImg = "https://github.com/devalrohit/AppFoodch4_assets/blob/main/ic_profile.png?raw=true"
         )
     }
 
@@ -32,4 +32,6 @@ class ProfileViewModel(private val repository: UserRepository) : ViewModel() {
     fun doLogout() {
         repository.doLogout()
     }
+    fun getCurrentUser() = repository.getCurrentUser()
+
 }

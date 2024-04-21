@@ -83,4 +83,5 @@
     <string name="btn_logout">btn_logout</string>
     <string name="logout">Logout</string>
     <string name="pemesanan_gagal">pemesanan gagal</string>
+    <string name="pesanan_akan_segera_di_proses">Pesanan akan segera di proses</string>
 </resources>
