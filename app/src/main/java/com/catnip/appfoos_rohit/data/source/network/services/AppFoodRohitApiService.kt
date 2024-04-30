@@ -17,24 +17,31 @@ import java.util.concurrent.TimeUnit
 interface AppFoodRohitApiService {
     @GET("category")
     suspend fun getCategories(): CategoriesResponse
+
     @GET("listmenu")
-    suspend fun getProduct(@Query("c") category : String? = null) : ProductResponse
+    suspend fun getProduct(
+        @Query("c") category: String? = null,
+    ): ProductResponse
 
     @POST("order")
-    suspend fun createOrder(@Body payload : CheckoutRequestPayload): CheckoutResponse
+    suspend fun createOrder(
+        @Body payload: CheckoutRequestPayload,
+    ): CheckoutResponse
 
     companion object {
         @JvmStatic
-        operator fun invoke() :AppFoodRohitApiService {
-            val okHttpClient= OkHttpClient.Builder()
-                .connectTimeout(120, TimeUnit.SECONDS)
-                .readTimeout(120, TimeUnit.SECONDS)
-                .build()
-            val retrofit = Retrofit.Builder()
-                .baseUrl(BuildConfig.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(okHttpClient)
-                .build()
+        operator fun invoke(): AppFoodRohitApiService {
+            val okHttpClient =
+                OkHttpClient.Builder()
+                    .connectTimeout(120, TimeUnit.SECONDS)
+                    .readTimeout(120, TimeUnit.SECONDS)
+                    .build()
+            val retrofit =
+                Retrofit.Builder()
+                    .baseUrl(BuildConfig.BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .client(okHttpClient)
+                    .build()
             return retrofit.create(AppFoodRohitApiService::class.java)
         }
     }

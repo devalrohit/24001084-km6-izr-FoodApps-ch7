@@ -8,5 +8,5 @@ data class Profile(
     val name: String,
     val nomor: String,
     val email: String,
-    val profileImg: String
+    val profileImg: String,
 )

@@ -46,68 +46,73 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 
 object AppModules {
-
-    private val networkModule = module {
-        single<AppFoodRohitApiService> { AppFoodRohitApiService.invoke() }
-    }
-
-    private val firebaseModule = module {
-        single<FirebaseAuth> { FirebaseAuth.getInstance() }
-        single<FirebaseService> { FirebaseServiceImpl(get()) }
-    }
-
-    val localModule = module {
-        single<AppDatabase> { AppDatabase.createInstance(androidContext()) }
-        single<CartDao> { get<AppDatabase>().cartDao() }
-        single<SharedPreferences> {
-            SharedPreferenceUtils.createPreference(
-                androidContext(),
-                PreferenceDataSourceImpl.PREF_NAME
-            )
+    private val networkModule =
+        module {
+            single<AppFoodRohitApiService> { AppFoodRohitApiService.invoke() }
         }
-        single<PreferenceDataSource> { PreferenceDataSourceImpl(get()) }
-    }
 
-    private val dataSource = module {
-        single<CartDataSource> { CartDatabaseDataSource(get()) }
-        single<CategoryDataSource> { CategoryApiDataSource(get()) }
-        single<ProductDataSource> { ProductApiDataSource(get()) }
-        single<UserDataSource> { UserDataSourceImpl() }
-        single<AuthDataSource> { FirebaseAuthDataSource(get()) }
-    }
-    private val repository = module {
-        single<CartRepository> { CartRepositoryImpl(get()) }
-        single<CategoryRepository> { CategoryRepositoryImpl(get()) }
-        single<ProductRepository> { ProductRepositoryImpl(get()) }
-        single<UserRepository> { UserRepositoryImpl(get()) }
-        single<PreferenceRepository> { PreferenceRepositoryImpl(get()) }
-    }
-
-    private val viewModelModule = module {
-        viewModelOf(::HomeViewModel)
-        viewModelOf(::CartViewModel)
-        viewModelOf(::CheckoutViewModel)
-        viewModel { params ->
-            //assisted injection
-            DetailProductViewModel(
-                extras = params.get(),
-                cartRepository = get()
-            )
+    private val firebaseModule =
+        module {
+            single<FirebaseAuth> { FirebaseAuth.getInstance() }
+            single<FirebaseService> { FirebaseServiceImpl(get()) }
         }
-        viewModelOf(::LoginViewModel)
-        viewModelOf(::MainViewModel)
-        viewModelOf(::ProfileViewModel)
-        viewModelOf(::RegisterViewModel)
-        viewModelOf(::SplashViewModel)
-    }
 
-    val modules = listOf<Module>(
-        networkModule,
-        localModule,
-        dataSource,
-        repository,
-        viewModelModule,
-        firebaseModule
-    )
+    val localModule =
+        module {
+            single<AppDatabase> { AppDatabase.createInstance(androidContext()) }
+            single<CartDao> { get<AppDatabase>().cartDao() }
+            single<SharedPreferences> {
+                SharedPreferenceUtils.createPreference(
+                    androidContext(),
+                    PreferenceDataSourceImpl.PREF_NAME,
+                )
+            }
+            single<PreferenceDataSource> { PreferenceDataSourceImpl(get()) }
+        }
+
+    private val dataSource =
+        module {
+            single<CartDataSource> { CartDatabaseDataSource(get()) }
+            single<CategoryDataSource> { CategoryApiDataSource(get()) }
+            single<ProductDataSource> { ProductApiDataSource(get()) }
+            single<UserDataSource> { UserDataSourceImpl() }
+            single<AuthDataSource> { FirebaseAuthDataSource(get()) }
+        }
+    private val repository =
+        module {
+            single<CartRepository> { CartRepositoryImpl(get()) }
+            single<CategoryRepository> { CategoryRepositoryImpl(get()) }
+            single<ProductRepository> { ProductRepositoryImpl(get()) }
+            single<UserRepository> { UserRepositoryImpl(get()) }
+            single<PreferenceRepository> { PreferenceRepositoryImpl(get()) }
+        }
+
+    private val viewModelModule =
+        module {
+            viewModelOf(::HomeViewModel)
+            viewModelOf(::CartViewModel)
+            viewModelOf(::CheckoutViewModel)
+            viewModel { params ->
+                // assisted injection
+                DetailProductViewModel(
+                    extras = params.get(),
+                    cartRepository = get(),
+                )
+            }
+            viewModelOf(::LoginViewModel)
+            viewModelOf(::MainViewModel)
+            viewModelOf(::ProfileViewModel)
+            viewModelOf(::RegisterViewModel)
+            viewModelOf(::SplashViewModel)
+        }
+
+    val modules =
+        listOf<Module>(
+            networkModule,
+            localModule,
+            dataSource,
+            repository,
+            viewModelModule,
+            firebaseModule,
+        )
 }
-

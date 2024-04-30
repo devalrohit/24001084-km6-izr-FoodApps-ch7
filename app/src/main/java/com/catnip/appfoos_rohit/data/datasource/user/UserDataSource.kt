@@ -4,7 +4,6 @@ interface UserDataSource {
     fun isUsingDarkMode(): Boolean
 
     fun setUsingDarkMode(isUsingDarkMode: Boolean)
-
 }
 
 class UserDataSourceImpl : UserDataSource {

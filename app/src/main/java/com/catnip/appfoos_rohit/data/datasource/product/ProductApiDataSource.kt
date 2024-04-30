@@ -6,7 +6,7 @@ import com.example.foodiesapp.data.source.network.model.checkout.CheckoutRequest
 import com.example.foodiesapp.data.source.network.model.checkout.CheckoutResponse
 
 class ProductApiDataSource(
-    private val service: AppFoodRohitApiService
+    private val service: AppFoodRohitApiService,
 ) : ProductDataSource {
     override suspend fun getProducts(categorySlug: String?): ProductResponse {
         return service.getProduct(categorySlug)

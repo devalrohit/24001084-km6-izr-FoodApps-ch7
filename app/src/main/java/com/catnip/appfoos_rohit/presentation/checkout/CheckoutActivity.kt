@@ -3,48 +3,29 @@ package com.catnip.appfood_rohit.presentation.checkout
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.catnip.appfood_rohit.R
-import com.catnip.appfood_rohit.data.datasource.cart.CartDataSource
-import com.catnip.appfood_rohit.data.datasource.cart.CartDatabaseDataSource
-import com.catnip.appfood_rohit.data.datasource.product.ProductApiDataSource
-import com.catnip.appfood_rohit.data.datasource.product.ProductDataSource
-import com.catnip.appfood_rohit.data.repository.CartRepository
-import com.catnip.appfood_rohit.data.repository.CartRepositoryImpl
-import com.catnip.appfood_rohit.data.repository.ProductRepositoryImpl
-import com.catnip.appfood_rohit.data.repository.UserRepository
-import com.catnip.appfood_rohit.data.repository.UserRepositoryImpl
-import com.catnip.appfood_rohit.data.source.local.database.AppDatabase
-import com.catnip.appfood_rohit.data.source.network.services.AppFoodRohitApiService
 import com.catnip.appfood_rohit.databinding.ActivityCheckoutBinding
 import com.catnip.appfood_rohit.presentation.checkout.adapter.PriceListAdapter
 import com.catnip.appfood_rohit.presentation.common.adapter.CartListAdapter
 import com.catnip.appfood_rohit.presentation.login.LoginActivity
-import com.catnip.appfood_rohit.utils.GenericViewModelFactory
 import com.catnip.appfood_rohit.utils.proceedWhen
 import com.catnip.appfood_rohit.utils.toRupiahFormat
-import com.catnip.appfoos_rohit.data.datasource.user.AuthDataSource
-import com.catnip.appfoos_rohit.data.datasource.user.FirebaseAuthDataSource
-import com.catnip.appfoos_rohit.data.source.network.firebase.FirebaseService
-import com.catnip.appfoos_rohit.data.source.network.firebase.FirebaseServiceImpl
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CheckoutActivity : AppCompatActivity() {
-
     private val binding: ActivityCheckoutBinding by lazy {
         ActivityCheckoutBinding.inflate(layoutInflater)
     }
-    private val chechkoutviewModel: CheckoutViewModel by viewModel ()
+    private val chechkoutviewModel: CheckoutViewModel by viewModel()
 
     private val adapter: CartListAdapter by lazy {
         CartListAdapter()
     }
     private val priceItemAdapter: PriceListAdapter by lazy {
         PriceListAdapter {
-
         }
     }
 
@@ -58,8 +39,9 @@ class CheckoutActivity : AppCompatActivity() {
 
     private fun observeData() {
         observeCartData()
-        //observeCheckoutResult()
+        // observeCheckoutResult()
     }
+
 /*    private fun observeCheckoutResult() {
         viewModel.checkoutResult.observe(this) {
             it.proceedWhen(
@@ -95,15 +77,14 @@ class CheckoutActivity : AppCompatActivity() {
                             binding.layoutState.tvError.isVisible = false
                             binding.layoutContent.root.isVisible = false
                             binding.layoutContent.rvCart.isVisible = false
-
                         },
                         doOnError = {
                             Toast.makeText(
                                 this,
                                 getString(R.string.pemesanan_gagal),
-                                Toast.LENGTH_SHORT
+                                Toast.LENGTH_SHORT,
                             ).show()
-                        }
+                        },
                     )
                 }
             } else {
@@ -124,6 +105,7 @@ class CheckoutActivity : AppCompatActivity() {
             .create()
             .show()
     }
+
     private fun navigateToLogin() {
         startActivity(Intent(this, LoginActivity::class.java))
     }

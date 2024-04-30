@@ -1,8 +1,7 @@
 package com.catnip.appfoos_rohit.data.source.network.model.products
 
-
-import com.google.gson.annotations.SerializedName
 import androidx.annotation.Keep
+import com.google.gson.annotations.SerializedName
 
 @Keep
 data class ProductResponse(
@@ -13,5 +12,5 @@ data class ProductResponse(
     @SerializedName("message")
     val message: String?,
     @SerializedName("status")
-    val status: Boolean?
+    val status: Boolean?,
 )

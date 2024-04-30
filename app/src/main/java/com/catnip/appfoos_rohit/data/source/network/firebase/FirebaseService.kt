@@ -9,11 +9,10 @@ import kotlinx.coroutines.tasks.await
 import java.lang.Exception
 
 interface FirebaseService {
-
     @Throws(exceptionClasses = [Exception::class])
     suspend fun doLogin(
         email: String,
-        password: String
+        password: String,
     ): Boolean
 
     @Throws(exceptionClasses = [Exception::class])
@@ -38,10 +37,11 @@ interface FirebaseService {
     fun getCurrentUser(): FirebaseUser?
 }
 
-class FirebaseServiceImpl(private val firebaseAuth : FirebaseAuth) : FirebaseService {
-
-
-    override suspend fun doLogin(email: String, password: String): Boolean {
+class FirebaseServiceImpl(private val firebaseAuth: FirebaseAuth) : FirebaseService {
+    override suspend fun doLogin(
+        email: String,
+        password: String,
+    ): Boolean {
         val loginResult = firebaseAuth.signInWithEmailAndPassword(email, password).await()
         return loginResult.user != null
     }
@@ -55,7 +55,7 @@ class FirebaseServiceImpl(private val firebaseAuth : FirebaseAuth) : FirebaseSer
         registerResult.user?.updateProfile(
             userProfileChangeRequest {
                 displayName = username
-            }
+            },
         )?.await()
         return registerResult.user != null
     }
@@ -64,7 +64,7 @@ class FirebaseServiceImpl(private val firebaseAuth : FirebaseAuth) : FirebaseSer
         getCurrentUser()?.updateProfile(
             userProfileChangeRequest {
                 username?.let { displayName = username }
-            }
+            },
         )?.await()
         return true
     }
@@ -98,5 +98,4 @@ class FirebaseServiceImpl(private val firebaseAuth : FirebaseAuth) : FirebaseSer
     override fun getCurrentUser(): FirebaseUser? {
         return firebaseAuth.currentUser
     }
-
 }

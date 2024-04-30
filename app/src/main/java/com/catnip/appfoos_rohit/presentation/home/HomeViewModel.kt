@@ -9,11 +9,10 @@ import com.catnip.appfood_rohit.data.repository.ProductRepository
 import com.catnip.appfoos_rohit.data.repository.PreferenceRepository
 import kotlinx.coroutines.Dispatchers
 
-
 class HomeViewModel(
     private val categoryRepository: CategoryRepository,
     private val menuRepository: ProductRepository,
-    private val userPreference: PreferenceRepository
+    private val userPreference: PreferenceRepository,
 ) : ViewModel() {
     private val _isUsingGridMode = MutableLiveData(userPreference.isUsingGridMode())
     val isUsingGridMode: LiveData<Boolean>
@@ -29,9 +28,7 @@ class HomeViewModel(
         userPreference.setUsingGridMode(!currentValue)
     }
 
-    fun getMenu(categoryName: String? = null) =
-        menuRepository.getProducts(categoryName).asLiveData(Dispatchers.IO)
+    fun getMenu(categoryName: String? = null) = menuRepository.getProducts(categoryName).asLiveData(Dispatchers.IO)
 
     fun getCategory() = categoryRepository.getCategories().asLiveData(Dispatchers.IO)
-
 }

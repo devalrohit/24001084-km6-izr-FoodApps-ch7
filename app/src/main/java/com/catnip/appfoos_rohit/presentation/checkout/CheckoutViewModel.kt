@@ -1,6 +1,5 @@
 package com.catnip.appfood_rohit.presentation.checkout
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -15,18 +14,18 @@ import kotlinx.coroutines.launch
 class CheckoutViewModel(
     private val cartRepository: CartRepository,
     private val userRepository: UserRepository,
-    private val productRepository: ProductRepository
+    private val productRepository: ProductRepository,
 ) : ViewModel() {
-
     val cartList = cartRepository.getCheckoutData().asLiveData(Dispatchers.IO)
     val checkoutData = cartRepository.getCheckoutData().asLiveData(Dispatchers.IO)
     private val _checkoutResult = MutableLiveData<ResultWrapper<Boolean>>()
-    fun checkoutCart() = productRepository.createOrder(
-        userRepository.getCurrentUser()?.fullName ?: "",
-        checkoutData.value?.payload?.first.orEmpty(),
-        checkoutData.value?.payload?.third?.toInt() ?: 0
-    ).asLiveData(Dispatchers.IO)
 
+    fun checkoutCart() =
+        productRepository.createOrder(
+            userRepository.getCurrentUser()?.fullName ?: "",
+            checkoutData.value?.payload?.first.orEmpty(),
+            checkoutData.value?.payload?.third?.toInt() ?: 0,
+        ).asLiveData(Dispatchers.IO)
 
     fun clearCart() {
         viewModelScope.launch(Dispatchers.IO) {

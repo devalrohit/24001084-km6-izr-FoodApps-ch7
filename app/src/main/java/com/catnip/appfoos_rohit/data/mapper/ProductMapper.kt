@@ -14,8 +14,7 @@ fun ProductItemResponse?.toProduct(): Product =
         desc = this?.desc.orEmpty(),
         price = this?.price?.toDouble() ?: 0.0,
         location = this?.location.orEmpty(),
-        locationPictUrl = "https://maps.app.goo.gl/h4wQKqaBuXzftGK77"
+        locationPictUrl = "https://maps.app.goo.gl/h4wQKqaBuXzftGK77",
     )
 
-fun Collection<ProductItemResponse>?.toProducts(): List<Product> =
-    this?.map { it.toProduct() } ?: listOf()
+fun Collection<ProductItemResponse>?.toProducts(): List<Product> = this?.map { it.toProduct() } ?: listOf()
