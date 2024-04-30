@@ -5,18 +5,11 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import coil.load
 import com.catnip.appfood_rohit.R
-import com.catnip.appfood_rohit.data.datasource.cart.CartDataSource
-import com.catnip.appfood_rohit.data.datasource.cart.CartDatabaseDataSource
 import com.catnip.appfood_rohit.data.model.Product
-import com.catnip.appfood_rohit.data.repository.CartRepository
-import com.catnip.appfood_rohit.data.repository.CartRepositoryImpl
-import com.catnip.appfood_rohit.data.source.local.database.AppDatabase
 import com.catnip.appfood_rohit.databinding.ActivityDetailProductBinding
-import com.catnip.appfood_rohit.utils.GenericViewModelFactory
 import com.catnip.appfood_rohit.utils.proceedWhen
 import com.catnip.appfood_rohit.utils.toRupiahFormat
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -83,18 +76,21 @@ class DetailProductActivity : AppCompatActivity() {
                 doOnSuccess = {
                     Toast.makeText(
                         this,
-                        getString(R.string.text_add_to_cart_success), Toast.LENGTH_SHORT
+                        getString(R.string.text_add_to_cart_success),
+                        Toast.LENGTH_SHORT,
                     ).show()
                     finish()
                 },
                 doOnError = {
                     Toast.makeText(
-                        this, getString(R.string.add_to_cart_failed), Toast.LENGTH_SHORT
+                        this,
+                        getString(R.string.add_to_cart_failed),
+                        Toast.LENGTH_SHORT,
                     ).show()
                 },
                 doOnLoading = {
                     Toast.makeText(this, getString(R.string.loading), Toast.LENGTH_SHORT).show()
-                }
+                },
             )
         }
     }
@@ -124,7 +120,11 @@ class DetailProductActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_PRODUCT = "EXTRA_PRODUCT"
-        fun startActivity(context: Context, product: Product) {
+
+        fun startActivity(
+            context: Context,
+            product: Product,
+        ) {
             val intent = Intent(context, DetailProductActivity::class.java)
             intent.putExtra(EXTRA_PRODUCT, product)
             context.startActivity(intent)

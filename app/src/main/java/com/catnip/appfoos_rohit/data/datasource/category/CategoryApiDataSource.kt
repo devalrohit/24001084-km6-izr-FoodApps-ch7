@@ -6,8 +6,9 @@ import com.catnip.appfoos_rohit.data.source.network.model.category.CategoriesRes
 /**
 Written with love by Muhammad Hermas Yuda Pamungkas
 Github : https://github.com/hermasyp
- **/class CategoryApiDataSource(
-    private val service: AppFoodRohitApiService
+ **/
+class CategoryApiDataSource(
+    private val service: AppFoodRohitApiService,
 ) : CategoryDataSource {
     override suspend fun getCategories(): CategoriesResponse {
         return service.getCategories()

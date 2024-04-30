@@ -6,18 +6,18 @@ import com.catnip.appfood_rohit.data.model.Profile
 import com.catnip.appfood_rohit.data.repository.UserRepository
 
 class ProfileViewModel(private val repository: UserRepository) : ViewModel() {
-
     val profileData = MutableLiveData<Profile>()
 
-        val isEditMode = MutableLiveData<Boolean>()
+    val isEditMode = MutableLiveData<Boolean>()
 
     init {
-        profileData.value = Profile(
-            name = "Muhammad Izroil",
-            nomor = "085159940924",
-            email = "muhammadizroil22@gmail.com",
-            profileImg = "https://github.com/devalrohit/AppFoodch4_assets/blob/main/ic_profile.png?raw=true"
-        )
+        profileData.value =
+            Profile(
+                name = "Muhammad Izroil",
+                nomor = "085159940924",
+                email = "muhammadizroil22@gmail.com",
+                profileImg = "https://github.com/devalrohit/AppFoodch4_assets/blob/main/ic_profile.png?raw=true",
+            )
     }
 
     fun changeEditMode() {
@@ -32,6 +32,6 @@ class ProfileViewModel(private val repository: UserRepository) : ViewModel() {
     fun doLogout() {
         repository.doLogout()
     }
-    fun getCurrentUser() = repository.getCurrentUser()
 
+    fun getCurrentUser() = repository.getCurrentUser()
 }

@@ -1,8 +1,7 @@
 package com.catnip.appfoos_rohit.data.source.network.model.products
 
-
-import com.google.gson.annotations.SerializedName
 import androidx.annotation.Keep
+import com.google.gson.annotations.SerializedName
 
 @Keep
 data class ProductItemResponse(
@@ -17,5 +16,5 @@ data class ProductItemResponse(
     @SerializedName("image_url")
     val imgUrl: String?,
     @SerializedName("nama")
-    val name: String?
+    val name: String?,
 )

@@ -12,8 +12,14 @@ import kotlinx.coroutines.flow.Flow
 
 interface ProductRepository {
     fun getProducts(category: String? = null): Flow<ResultWrapper<List<Product>>>
-    fun createOrder(profile: String, product: List<Cart>, totalPrice: Int): Flow<ResultWrapper<Boolean>>
+
+    fun createOrder(
+        profile: String,
+        product: List<Cart>,
+        totalPrice: Int,
+    ): Flow<ResultWrapper<Boolean>>
 }
+
 class ProductRepositoryImpl(private val dataSource: ProductDataSource) : ProductRepository {
     override fun getProducts(category: String?): Flow<ResultWrapper<List<Product>>> {
         return proceedFlow { dataSource.getProducts(category).data.toProducts() }
@@ -22,23 +28,25 @@ class ProductRepositoryImpl(private val dataSource: ProductDataSource) : Product
     override fun createOrder(
         profile: String,
         product: List<Cart>,
-        totalPrice: Int
+        totalPrice: Int,
     ): Flow<ResultWrapper<Boolean>> {
         return proceedFlow {
-            val response = dataSource.createOrder(
-                CheckoutRequestPayload(
-                    total = totalPrice,
-                    username = profile,
-                    orders = product.map {
-                        CheckoutItemPayload(
-                            nama = it.productName,
-                            qty = it.itemQuantity,
-                            catatan = it.itemNotes.orEmpty(),
-                            harga = it.productPrice.toInt()
-                        )
-                    }
+            val response =
+                dataSource.createOrder(
+                    CheckoutRequestPayload(
+                        total = totalPrice,
+                        username = profile,
+                        orders =
+                            product.map {
+                                CheckoutItemPayload(
+                                    nama = it.productName,
+                                    qty = it.itemQuantity,
+                                    catatan = it.itemNotes.orEmpty(),
+                                    harga = it.productPrice.toInt(),
+                                )
+                            },
+                    ),
                 )
-            )
             // Mengembalikan true jika respons sukses, false jika tidak
             response != null
         }
