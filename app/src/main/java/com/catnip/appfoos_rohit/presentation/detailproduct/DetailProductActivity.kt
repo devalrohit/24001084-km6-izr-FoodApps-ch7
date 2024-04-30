@@ -19,24 +19,21 @@ import com.catnip.appfood_rohit.databinding.ActivityDetailProductBinding
 import com.catnip.appfood_rohit.utils.GenericViewModelFactory
 import com.catnip.appfood_rohit.utils.proceedWhen
 import com.catnip.appfood_rohit.utils.toRupiahFormat
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class DetailProductActivity : AppCompatActivity() {
     private val binding: ActivityDetailProductBinding by lazy {
         ActivityDetailProductBinding.inflate(layoutInflater)
     }
-    private val viewModel: DetailProductViewModel by viewModels {
-        val db = AppDatabase.getInstance(this)
-        val ds: CartDataSource = CartDatabaseDataSource(db.cartDao())
-        val rp: CartRepository = CartRepositoryImpl(ds)
-        GenericViewModelFactory.create(
-            DetailProductViewModel(intent?.extras, rp)
-        )
+    private val detailProductviewModel: DetailProductViewModel by viewModel {
+        parametersOf(intent.extras)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        bindProduct(viewModel.product)
+        bindProduct(detailProductviewModel.product)
         setClickListener()
         observeData()
         val product = intent.getParcelableExtra<Product>(EXTRA_PRODUCT)
@@ -48,16 +45,16 @@ class DetailProductActivity : AppCompatActivity() {
             onBackPressed()
         }
         binding.ivMinus.setOnClickListener {
-            viewModel.minus()
+            detailProductviewModel.minus()
         }
         binding.ivPlus.setOnClickListener {
-            viewModel.add()
+            detailProductviewModel.add()
         }
         binding.btnAddToCart.setOnClickListener {
             addProductToCart()
         }
         binding.layoutDetailLocation.tvDetailLocation.setOnClickListener {
-            viewModel.product?.let { product ->
+            detailProductviewModel.product?.let { product ->
                 openLocationOnMap(product.locationPictUrl)
             }
         }
@@ -81,7 +78,7 @@ class DetailProductActivity : AppCompatActivity() {
     }
 
     private fun addProductToCart() {
-        viewModel.addToCart().observe(this) {
+        detailProductviewModel.addToCart().observe(this) {
             it.proceedWhen(
                 doOnSuccess = {
                     Toast.makeText(
@@ -103,11 +100,11 @@ class DetailProductActivity : AppCompatActivity() {
     }
 
     private fun observeData() {
-        viewModel.priceLiveData.observe(this) {
+        detailProductviewModel.priceLiveData.observe(this) {
             binding.btnAddToCart.isEnabled = it != 0.0
             binding.tvCalculatedProductPrice.text = it.toRupiahFormat()
         }
-        viewModel.productCountLiveData.observe(this) {
+        detailProductviewModel.productCountLiveData.observe(this) {
             binding.tvProductCount.text = it.toString()
         }
     }

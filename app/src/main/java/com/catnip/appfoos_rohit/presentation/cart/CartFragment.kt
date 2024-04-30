@@ -23,35 +23,29 @@ import com.catnip.appfood_rohit.utils.GenericViewModelFactory
 import com.catnip.appfood_rohit.utils.hideKeyboard
 import com.catnip.appfood_rohit.utils.proceedWhen
 import com.catnip.appfood_rohit.utils.toRupiahFormat
-
-
+import org.koin.androidx.viewmodel.ext.android.viewModel
 class CartFragment : Fragment() {
 
     private lateinit var binding: FragmentCartBinding
 
-    private val viewModel: CartViewModel by viewModels {
-        val db = AppDatabase.getInstance(requireContext())
-        val ds: CartDataSource = CartDatabaseDataSource(db.cartDao())
-        val rp: CartRepository = CartRepositoryImpl(ds)
-        GenericViewModelFactory.create(CartViewModel(rp))
-    }
+    private val cartViewModel: CartViewModel by viewModel ()
 
     private val adapter: CartListAdapter by lazy {
         CartListAdapter(object : CartListener {
             override fun onPlusTotalItemCartClicked(cart: Cart) {
-                viewModel.increaseCart(cart)
+                cartViewModel.increaseCart(cart)
             }
 
             override fun onMinusTotalItemCartClicked(cart: Cart) {
-                viewModel.decreaseCart(cart)
+                cartViewModel.decreaseCart(cart)
             }
 
             override fun onRemoveCartClicked(cart: Cart) {
-                viewModel.removeCart(cart)
+                cartViewModel.removeCart(cart)
             }
 
             override fun onUserDoneEditingNotes(cart: Cart) {
-                viewModel.setCartNotes(cart)
+                cartViewModel.setCartNotes(cart)
                 hideKeyboard()
             }
         })
@@ -84,7 +78,7 @@ class CartFragment : Fragment() {
         }
     }
     private fun observeData() {
-        viewModel.getAllCarts().observe(viewLifecycleOwner) { result ->
+        cartViewModel.getAllCarts().observe(viewLifecycleOwner) { result ->
             result.proceedWhen(
                 doOnLoading = {
                     binding.layoutState.root.isVisible = true

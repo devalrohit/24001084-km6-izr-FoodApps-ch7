@@ -2,11 +2,8 @@ package com.catnip.appfood_rohit.presentation.main
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.catnip.appfood_rohit.R
@@ -20,6 +17,7 @@ import com.catnip.appfoos_rohit.data.datasource.user.FirebaseAuthDataSource
 import com.catnip.appfoos_rohit.data.source.network.firebase.FirebaseService
 import com.catnip.appfoos_rohit.data.source.network.firebase.FirebaseServiceImpl
 import com.catnip.appfoos_rohit.presentation.main.MainViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,12 +25,7 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    private val viewModel: MainViewModel by viewModels {
-        val service: FirebaseService = FirebaseServiceImpl()
-        val dataSource: AuthDataSource = FirebaseAuthDataSource(service)
-        val repository: UserRepository = UserRepositoryImpl(dataSource)
-        GenericViewModelFactory.create(MainViewModel(repository))
-    }
+    private val mainviewModel: MainViewModel by viewModel ()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             when (destination.id) {
                 R.id.menu_tab_profile -> {
-                    if(!viewModel.isLoggedIn()){
+                    if(!mainviewModel.isLoggedIn()){
                         navigateToLogin()
                         controller.navigate(R.id.menu_tab_home)
                     }

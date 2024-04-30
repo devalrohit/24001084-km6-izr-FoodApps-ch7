@@ -19,6 +19,7 @@ import com.catnip.appfoos_rohit.data.datasource.user.FirebaseAuthDataSource
 import com.catnip.appfoos_rohit.data.source.network.firebase.FirebaseService
 import com.catnip.appfoos_rohit.data.source.network.firebase.FirebaseServiceImpl
 import com.catnip.appfoos_rohit.utils.highLightWord
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginActivity : AppCompatActivity() {
 
@@ -27,12 +28,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
-    private val viewModel: LoginViewModel by viewModels {
-        val s: FirebaseService = FirebaseServiceImpl()
-        val ds: AuthDataSource = FirebaseAuthDataSource(s)
-        val r: UserRepository = UserRepositoryImpl(ds)
-        GenericViewModelFactory.create(LoginViewModel(r))
-    }
+    private val loginviewModel: LoginViewModel by viewModel ()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +66,7 @@ class LoginActivity : AppCompatActivity() {
 
 
     private fun proceedLogin(email: String, password: String) {
-        viewModel.doLogin(email, password).observe(this) { result ->
+        loginviewModel.doLogin(email, password).observe(this) { result ->
             result.proceedWhen(
                 doOnSuccess = {
                     binding.pbLoading.isVisible = false
