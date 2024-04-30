@@ -12,10 +12,6 @@ import com.catnip.appfood_rohit.utils.ResultWrapper
 import kotlinx.coroutines.Dispatchers
 import java.lang.IllegalStateException
 
-/**
-Written with love by Muhammad Hermas Yuda Pamungkas
-Github : https://github.com/hermasyp
- **/
 class DetailProductViewModel(
     private val extras: Bundle?,
     private val cartRepository: CartRepository

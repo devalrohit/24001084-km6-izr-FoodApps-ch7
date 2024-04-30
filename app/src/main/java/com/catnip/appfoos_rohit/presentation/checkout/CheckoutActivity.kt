@@ -30,24 +30,14 @@ import com.catnip.appfoos_rohit.data.datasource.user.AuthDataSource
 import com.catnip.appfoos_rohit.data.datasource.user.FirebaseAuthDataSource
 import com.catnip.appfoos_rohit.data.source.network.firebase.FirebaseService
 import com.catnip.appfoos_rohit.data.source.network.firebase.FirebaseServiceImpl
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CheckoutActivity : AppCompatActivity() {
 
     private val binding: ActivityCheckoutBinding by lazy {
         ActivityCheckoutBinding.inflate(layoutInflater)
     }
-    private val viewModel: CheckoutViewModel by viewModels {
-        val foodiesApiService = AppFoodRohitApiService.invoke()
-        val productDataSource : ProductDataSource = ProductApiDataSource(foodiesApiService)
-        val productRepository = ProductRepositoryImpl(productDataSource)
-        val firebaseService: FirebaseService = FirebaseServiceImpl()
-        val firebaseDataSource: AuthDataSource = FirebaseAuthDataSource(firebaseService)
-        val firebaseRepository: UserRepository = UserRepositoryImpl(firebaseDataSource)
-        val database = AppDatabase.getInstance(this)
-        val cartDataSource: CartDataSource = CartDatabaseDataSource(database.cartDao())
-        val cartRepository: CartRepository = CartRepositoryImpl(cartDataSource)
-        GenericViewModelFactory.create(CheckoutViewModel(cartRepository, firebaseRepository, productRepository ))
-    }
+    private val chechkoutviewModel: CheckoutViewModel by viewModel ()
 
     private val adapter: CartListAdapter by lazy {
         CartListAdapter()
@@ -93,8 +83,8 @@ class CheckoutActivity : AppCompatActivity() {
     }*/
     private fun setClickListeners() {
         binding.btnCheckoutFinal.setOnClickListener {
-            if (viewModel.isLoggedIn()) {
-                viewModel.checkoutCart().observe(this) {
+            if (chechkoutviewModel.isLoggedIn()) {
+                chechkoutviewModel.checkoutCart().observe(this) {
                     it.proceedWhen(
                         doOnSuccess = {
                             showDialogCheckoutSuccess()
@@ -128,7 +118,7 @@ class CheckoutActivity : AppCompatActivity() {
         AlertDialog.Builder(this@CheckoutActivity)
             .setView(dialogView)
             .setPositiveButton(getString(R.string.kembali_ke_home)) { _, _ ->
-                viewModel.clearCart()
+                chechkoutviewModel.clearCart()
                 finish()
             }
             .create()
@@ -144,7 +134,7 @@ class CheckoutActivity : AppCompatActivity() {
     }
 
     private fun observeCartData() {
-        viewModel.cartList.observe(this) { result ->
+        chechkoutviewModel.cartList.observe(this) { result ->
             result.proceedWhen(doOnSuccess = {
                 binding.layoutState.root.isVisible = false
                 binding.layoutState.pbLoading.isVisible = false

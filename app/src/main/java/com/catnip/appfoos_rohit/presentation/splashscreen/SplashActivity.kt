@@ -18,18 +18,14 @@ import com.catnip.appfoos_rohit.data.source.network.firebase.FirebaseServiceImpl
 import com.catnip.firebaseauthexample.presentation.splashscreen.SplashViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SplashActivity : AppCompatActivity() {
 
     private val binding: ActivitySplashBinding by lazy {
         ActivitySplashBinding.inflate(layoutInflater)
     }
-    private val viewModel: SplashViewModel by viewModels {
-        val s: FirebaseService = FirebaseServiceImpl()
-        val ds: AuthDataSource = FirebaseAuthDataSource(s)
-        val r: UserRepository = UserRepositoryImpl(ds)
-        GenericViewModelFactory.create(SplashViewModel(r))
-    }
+    private val splashViewModel: SplashViewModel by viewModel ()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

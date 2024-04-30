@@ -21,19 +21,14 @@ import com.catnip.appfoos_rohit.data.source.network.firebase.FirebaseService
 import com.catnip.appfoos_rohit.data.source.network.firebase.FirebaseServiceImpl
 import com.catnip.appfoos_rohit.utils.highLightWord
 import com.google.android.material.textfield.TextInputLayout
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RegisterActivity : AppCompatActivity() {
     private val binding: ActivityRegisterBinding by lazy {
         ActivityRegisterBinding.inflate(layoutInflater)
     }
 
-    private val viewModel: RegisterViewModel by viewModels {
-        val s: FirebaseService = FirebaseServiceImpl()
-        val ds: AuthDataSource = FirebaseAuthDataSource(s)
-        val r: UserRepository = UserRepositoryImpl(ds)
-        GenericViewModelFactory.create(RegisterViewModel(r))
-    }
-
+    private val registerviewModel: RegisterViewModel by viewModel ()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -66,7 +61,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun proceedRegister(email: String, password: String, fullName: String) {
-        viewModel.doRegister(email, fullName, password).observe(this) {
+        registerviewModel.doRegister(email, fullName, password).observe(this) {
             it.proceedWhen(
                 doOnSuccess = {
                     binding.pbLoading.isVisible = false

@@ -20,18 +20,14 @@ import com.catnip.appfoos_rohit.data.datasource.user.AuthDataSource
 import com.catnip.appfoos_rohit.data.datasource.user.FirebaseAuthDataSource
 import com.catnip.appfoos_rohit.data.source.network.firebase.FirebaseService
 import com.catnip.appfoos_rohit.data.source.network.firebase.FirebaseServiceImpl
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
 
-    private val viewModel: ProfileViewModel by viewModels {
-        val service: FirebaseService = FirebaseServiceImpl()
-        val dataSource: AuthDataSource = FirebaseAuthDataSource(service)
-        val repository: UserRepository = UserRepositoryImpl(dataSource)
-        GenericViewModelFactory.create(ProfileViewModel(repository))
-    }
+    private val profileviewModel: ProfileViewModel by viewModel ()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,11 +47,11 @@ class ProfileFragment : Fragment() {
 
     private fun setClickListener() {
         binding.btnEdit.setOnClickListener {
-            viewModel.changeEditMode()
+            profileviewModel.changeEditMode()
         }
 
         binding.btnLogout.setOnClickListener {
-            viewModel.doLogout()
+            profileviewModel.doLogout()
             navigateToLogin()
             val navController = findNavController()
             navController.navigate(R.id.menu_tab_home)
@@ -63,11 +59,11 @@ class ProfileFragment : Fragment() {
     }
 
     private fun observeProfileData() {
-        viewModel.getCurrentUser()?.let { user ->
+        profileviewModel.getCurrentUser()?.let { user ->
             binding.nameEditText.setText(user.fullName)
             binding.emailEditText.setText(user.email)
         }
-        viewModel.profileData.observe(viewLifecycleOwner) { profile ->
+        profileviewModel.profileData.observe(viewLifecycleOwner) { profile ->
             profile?.let {
                 binding.ivProfile.load(it.profileImg) {
                     crossfade(true)
@@ -86,14 +82,14 @@ class ProfileFragment : Fragment() {
     }
 
     private fun observeEditMode() {
-        viewModel.isEditMode.observe(viewLifecycleOwner) {
+        profileviewModel.isEditMode.observe(viewLifecycleOwner) {
             binding.emailEditText.isClickable = it
             binding.nameEditText.isEnabled = it
         }
     }
 
     private fun observeLoginStatus() {
-        if (!viewModel.isLoggedIn()) {
+        if (!profileviewModel.isLoggedIn()) {
             navigateToLogin()
         }
     }
