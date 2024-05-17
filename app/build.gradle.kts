@@ -109,5 +109,12 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    testImplementation("junit:junit:4.12")
+    testImplementation(libs.mockk.agent)
+    androidTestImplementation(libs.mockk.android)
+    testImplementation(libs.coroutine.test)
+    testImplementation(libs.turbine)
+    testImplementation(libs.core.testing)
+
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 }

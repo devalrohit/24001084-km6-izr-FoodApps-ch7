@@ -5,8 +5,12 @@ import com.google.gson.annotations.SerializedName
 
 @Keep
 data class CategoryItemResponse(
+    @SerializedName("id")
+    val id: String?,
     @SerializedName("image_url")
     val imageUrl: String?,
     @SerializedName("nama")
     val nama: String?,
+    @SerializedName("slug")
+    val slug: String?,
 )
