@@ -23,6 +23,17 @@ class SplashActivity : AppCompatActivity() {
         checkIfUserLogin()
     }
 
+    private fun directUser() {
+        lifecycleScope.launch {
+            delay(2000)
+            if (splashViewModel.isUserLoggedIn()) {
+                navigateToMain()
+            } else {
+                navigateToMain()
+            }
+        }
+    }
+
     private fun checkIfUserLogin() {
         lifecycleScope.launch {
             delay(2000)
